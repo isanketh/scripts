@@ -3,18 +3,34 @@ import os
 import sys
 
 #### Read the file size
+
 def fileSize ( file ,total_size):
+        # sanketh: minor: do we need os.path.abspath()?
         if (os.path.exists(os.path.abspath(file))):
+                # sanketh: minor: do we need str() operators here?
+                # sanketh: minor: also useful to look at https://docs.python.org/3/library/string.html#formatexamples
+                # sanketh: so you can write print "{} {} bytes".format(os.path.abspath(file), os.path.getsize(file))
+                # sanketh: which is easier to read
                 print str(os.path.abspath(file)) + "  " + str(os.path.getsize(file)) + " bytes"
+        
+                # sanketh: total_size += os.path.getsize(file) 
+                # sanketh: do we need int() operator here?
                 total_size = total_size + int(os.path.getsize(file))
                 return total_size
+        # sanketh: what do we return in the "else" clause?
 
 ############# Main script
 def main(dir_name):
         total_size = 0 
+        # sanketh: minor: do we need os.path.abspath()?
+        # sanketh: minor: fileNames is different from the naming of variables using underscore. so it should be
+        # file_names to be consistent
         for root,dir,fileNames in os.walk(os.path.abspath(dir_name)):
                 for fileName in fileNames:
                         file_wanted=os.path.join(root,fileName)
+                        # sanketh: fileSize method name is kind of inappropriate.
+                        # because it does not return file size, it returns file size + total_size
+                        # it seems better to make it just return file size and add the return value to total size here
                         total_size = fileSize(file_wanted,total_size)
         print "Total " + str(total_size) + " bytes"
 
